@@ -37,16 +37,16 @@ def generate_launch_description():
 
     return LaunchDescription([
 
-        # Launch camera driver
-        # IncludeLaunchDescription(
-        #     PythonLaunchDescriptionSource([os.path.join(
-        #         get_package_share_directory('depthai_examples'), 'launch'),
-        #         '/stereo_inertial_node.launch.py']),
-        #         launch_arguments={'depth_aligned': 'false',
-        #                           'enableRviz': 'false',
-        #                           'monoResolution': '400p'}.items(),
-        # ),
-        #
+        Launch camera driver
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([os.path.join(
+                get_package_share_directory('depthai_examples'), 'launch'),
+                '/stereo_inertial_node.launch.py']),
+                launch_arguments={'depth_aligned': 'false',
+                                  'enableRviz': 'false',
+                                  'monoResolution': '400p'}.items(),
+        ),
+
         # Sync right/depth/camera_info together
         # Node(   
         #     package='rtabmap_sync', executable='rgbd_sync', output='screen',
@@ -75,6 +75,12 @@ def generate_launch_description():
                 '-configuration_directory', cartographer_config_dir,
                 '-configuration_basename', configuration_basename
             ]
+        ),
+
+        Node(
+            package='depthimage_to_laserscan',
+            node='depthimage_to_laserscan_node',
+            remappings=[('/depth/image', '/depth')]
         ),
 
         # Node(
